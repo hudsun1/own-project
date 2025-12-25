@@ -4,11 +4,11 @@ info:
   version: 1.0.0
   description: API for Ken
 servers:
-  - url: http://localhost:3000
+  - url: http://localhost:5432
     description: Local development server
   - url: https://your-domain.com
     description: Production server (update with your actual domain)
-  - url: http://0.0.0.0:3000
+  - url: http://0.0.0.0:5432
     description: Public access (update port if different)
 paths:
   /api/v1/payments:

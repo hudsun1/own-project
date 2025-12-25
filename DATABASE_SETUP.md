@@ -18,7 +18,7 @@ Your Railway database is hosted at: `postgres-production-926b.up.railway.app`
 
 2. Create a `.env` file in the project root (if using dotenv gem) or set environment variables:
    ```bash
-   DATABASE_URL=postgresql://user:password@postgres-production-926b.up.railway.app:3000/railway
+   DATABASE_URL=postgresql://user:password@postgres-production-926b.up.railway.app:5432/railway
    ```
 
 ### Option 2: Using Individual Environment Variables
@@ -27,7 +27,7 @@ If you prefer to use individual variables, create a `.env` file with:
 
 ```bash
 DB_HOST=postgres-production-926b.up.railway.app
-DB_PORT=3000
+DB_PORT=5432
 DB_NAME=railway
 DB_USER=postgres
 DB_PASSWORD=KAeixPsAJvutpccGkLZEOcjRJqEJsqnz
@@ -54,7 +54,7 @@ The application supports the following environment variables:
 
 - `DATABASE_URL` - Full PostgreSQL connection string (takes precedence)
 - `DB_HOST` - Database hostname
-- `DB_PORT` - Database port (default: 3000)
+- `DB_PORT` - Database port (default: 5432)
 - `DB_NAME` - Database name
 - `DB_USER` - Database username
 - `DB_PASSWORD` - Database password

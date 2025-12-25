@@ -15,7 +15,7 @@ development:
   username: <%= ENV.fetch("DB_USER") { "postgres" } %>
   password: <%= ENV.fetch("DB_PASSWORD") { "" } %>
   host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
-  port: <%= ENV.fetch("DB_PORT") { "3000" } %>
+  port: <%= ENV.fetch("DB_PORT") { "5432" } %>
   <% end %>
 
 # Warning: The database defined as "test" will be erased and
@@ -30,7 +30,7 @@ test:
   username: <%= ENV.fetch("DB_USER") { "postgres" } %>
   password: <%= ENV.fetch("DB_PASSWORD") { "" } %>
   host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
-  port: <%= ENV.fetch("DB_PORT") { "3000" } %>
+  port: <%= ENV.fetch("DB_PORT") { "5432" } %>
   <% end %>
 
 # Production database configuration for Railway PostgreSQL
@@ -44,7 +44,7 @@ test:
 #     username: <%= ENV.fetch("DB_USER") { "postgres" } %>
 #     password: <%= ENV.fetch("DB_PASSWORD") { "" } %>
 #     host: <%= ENV.fetch("DB_HOST") { "postgres-production-926b.up.railway.app" } %>
-#     port: <%= ENV.fetch("DB_PORT") { "3000" } %>
+#     port: <%= ENV.fetch("DB_PORT") { "5432" } %>
 #     <% end %>
 #   cache:
 #     <<: *default
@@ -55,7 +55,7 @@ test:
 #     username: <%= ENV.fetch("DB_USER") { "postgres" } %>
 #     password: <%= ENV.fetch("DB_PASSWORD") { "" } %>
 #     host: <%= ENV.fetch("DB_HOST") { "postgres-production-926b.up.railway.app" } %>
-#     port: <%= ENV.fetch("DB_PORT") { "3000" } %>
+#     port: <%= ENV.fetch("DB_PORT") { "5432" } %>
 #     <% end %>
 #     migrations_paths: db/cache_migrate
 #   queue:
@@ -67,7 +67,7 @@ test:
 #     username: <%= ENV.fetch("DB_USER") { "postgres" } %>
 #     password: <%= ENV.fetch("DB_PASSWORD") { "" } %>
 #     host: <%= ENV.fetch("DB_HOST") { "postgres-production-926b.up.railway.app" } %>
-#     port: <%= ENV.fetch("DB_PORT") { "3000" } %>
+#     port: <%= ENV.fetch("DB_PORT") { "5432" } %>
 #     <% end %>
 #     migrations_paths: db/queue_migrate
 #   cable:
@@ -79,7 +79,7 @@ test:
 #     username: <%= ENV.fetch("DB_USER") { "postgres" } %>
 #     password: <%= ENV.fetch("DB_PASSWORD") { "" } %>
 #     host: <%= ENV.fetch("DB_HOST") { "postgres-production-926b.up.railway.app" } %>
-#     port: <%= ENV.fetch("DB_PORT") { "3000" } %>
+#     port: <%= ENV.fetch("DB_PORT") { "5432" } %>
 #     <% end %>
 #     migrations_paths: db/cable_migrate
 
