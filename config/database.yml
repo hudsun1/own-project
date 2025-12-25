@@ -84,9 +84,10 @@ test:
 #     migrations_paths: db/cable_migrate
 
 production:
-production:
-  adapter: postgresql
-  encoding: unicode
-  # This line is the magic part:
-  url: <%= ENV['DATABASE_URL'] %>
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  primary: &primary
+    adapter: postgresql
+    encoding: unicode
+    url: <%= ENV["DATABASE_URL"] %>
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  queue:
+    <<: *primary
