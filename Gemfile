@@ -33,7 +33,7 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "~> 1.2"
 
-    # RSpec for testing [https://rspec.info/]
+# RSpec for testing [https://rspec.info/]
 gem "rspec-rails"
 gem "rswag-api"
 gem "rswag-ui"
@@ -41,6 +41,8 @@ gem "rswag-specs"
 
 gem "ruby-gemini-api"
 
+
+gem "sqlite3"
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 gem "rack-cors"

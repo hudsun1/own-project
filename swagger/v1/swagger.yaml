@@ -1,0 +1,477 @@
+openapi: 3.0.3
+info:
+  title: Ken API
+  version: 1.0.0
+  description: API for Ken
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+  - url: https://your-domain.com
+    description: Production server (update with your actual domain)
+  - url: http://0.0.0.0:3000
+    description: Public access (update port if different)
+paths:
+  /api/v1/payments:
+    get:
+      summary: Get all payments
+      tags:
+        - Payments
+      responses:
+        '200':
+          description: A list of payments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment'
+    post:
+      summary: Create a new payment
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentInput'
+      responses:
+        '201':
+          description: Payment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/payments/{id}:
+    get:
+      summary: Get a payment by ID
+      tags:
+        - Payments
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Payment ID
+      responses:
+        '200':
+          description: Payment details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '404':
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      summary: Update a payment
+      tags:
+        - Payments
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Payment ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentInput'
+      responses:
+        '200':
+          description: Payment updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '404':
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete a payment
+      tags:
+        - Payments
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Payment ID
+      responses:
+        '204':
+          description: Payment deleted successfully
+        '404':
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/qr:
+    security:
+      - bearerAuth: []
+    get:
+      summary: Get all QR codes
+      description: Retrieve all QR codes. Bearer token authentication required.
+      tags:
+        - QR Codes
+      responses:
+        '200':
+          description: A list of QR codes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QR'
+        '401':
+          description: Unauthorized - Bearer token required or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Unauthorized. Bearer token required."
+    post:
+      summary: Create a new QR code
+      description: Create a QR code by providing imageUrl and description. Bearer token authentication required.
+      tags:
+        - QR Codes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/QRInput'
+                - type: object
+                  properties:
+                    imageUrl:
+                      type: string
+                      format: uri
+                      description: URL of the QR code image
+                      example: "https://example.com/qr/image.png"
+                    description:
+                      type: string
+                      description: QR code description
+                      example: "Payment QR code"
+                  required:
+                    - imageUrl
+            examples:
+              flat_format:
+                summary: Flat JSON format
+                value:
+                  imageUrl: "https://example.com/qr/image.png"
+                  description: "Payment QR code"
+              nested_format:
+                summary: Nested JSON format
+                value:
+                  qr:
+                    imageUrl: "https://example.com/qr/image.png"
+                    description: "Payment QR code"
+      responses:
+        '201':
+          description: QR code created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QR'
+              example:
+                id: 1
+                imageUrl: "https://example.com/qr/image.png"
+                description: "Payment QR code"
+                created_at: "2025-12-22T20:00:00.000Z"
+                updated_at: "2025-12-22T20:00:00.000Z"
+        '401':
+          description: Unauthorized - Bearer token required or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Unauthorized. Bearer token required."
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Imageurl can't be blank"
+  /api/qr/{id}:
+    get:
+      summary: Get a QR code by ID (Public API)
+      description: Public endpoint to retrieve a specific QR code by ID. No authentication required.
+      tags:
+        - QR Codes
+        - Public API
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: QR code ID
+      responses:
+        '200':
+          description: QR code details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QR'
+        '404':
+          description: QR code not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "QR code not found"
+  /api/v1/qrs:
+    get:
+      summary: Get all QR codes
+      tags:
+        - QR Codes
+      responses:
+        '200':
+          description: A list of QR codes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QR'
+    post:
+      summary: Create a new QR code
+      tags:
+        - QR Codes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QRInput'
+      responses:
+        '201':
+          description: QR code created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QR'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/qrs/{id}:
+    get:
+      summary: Get a QR code by ID
+      tags:
+        - QR Codes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: QR code ID
+      responses:
+        '200':
+          description: QR code details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QR'
+        '404':
+          description: QR code not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      summary: Update a QR code
+      tags:
+        - QR Codes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: QR code ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QRInput'
+      responses:
+        '200':
+          description: QR code updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QR'
+        '404':
+          description: QR code not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete a QR code
+      tags:
+        - QR Codes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: QR code ID
+      responses:
+        '204':
+          description: QR code deleted successfully
+        '404':
+          description: QR code not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Payment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Payment ID
+          readOnly: true
+        amount:
+          type: number
+          format: decimal
+          description: Payment amount
+          example: 99.99
+        description:
+          type: string
+          description: Payment description
+          example: "Monthly subscription payment"
+        created_at:
+          type: string
+          format: date-time
+          description: Payment creation timestamp
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Payment last update timestamp
+          readOnly: true
+      required:
+        - id
+        - created_at
+        - updated_at
+    PaymentInput:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: decimal
+          description: Payment amount
+          example: 99.99
+        description:
+          type: string
+          description: Payment description
+          example: "Monthly subscription payment"
+      required:
+        - amount
+    QR:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: QR code ID
+          readOnly: true
+        imageUrl:
+          type: string
+          format: uri
+          description: URL of the QR code image
+          example: "https://example.com/qr/image.png"
+        description:
+          type: string
+          description: QR code description
+          example: "Payment QR code"
+        created_at:
+          type: string
+          format: date-time
+          description: QR code creation timestamp
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: QR code last update timestamp
+          readOnly: true
+      required:
+        - id
+        - created_at
+        - updated_at
+    QRInput:
+      type: object
+      properties:
+        imageUrl:
+          type: string
+          format: uri
+          description: URL of the QR code image
+          example: "https://example.com/qr/image.png"
+        description:
+          type: string
+          description: QR code description
+          example: "Payment QR code"
+      required:
+        - imageUrl
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: "Resource not found"
+        details:
+          type: object
+          description: Additional error details
+      required:
+        - error
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
