@@ -42,8 +42,6 @@ gem "rswag-specs"
 gem "ruby-gemini-api"
 
 
-gem "sqlite3"
-
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 gem "rack-cors"
 

@@ -6,17 +6,26 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
+# development:
+#   <<: *default
+#   <% if ENV['DATABASE_URL'] %>
+#   url: <%= ENV['DATABASE_URL'] %>
+#   <% else %>
+#   database: <%= ENV.fetch("DB_NAME") { "own_project_development" } %>
+#   username: <%= ENV.fetch("DB_USER") { "postgres" } %>
+#   host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
+#   port: <%= ENV.fetch("DB_PORT") { "5432" } %>
+#   <% end %>
+
 development:
-  <<: *default
-  <% if ENV['DATABASE_URL'] %>
-  url: <%= ENV['DATABASE_URL'] %>
-  <% else %>
-  database: <%= ENV.fetch("DB_NAME") { "own_project_development" } %>
-  username: <%= ENV.fetch("DB_USER") { "postgres" } %>
-  password: <%= ENV.fetch("DB_PASSWORD") { "" } %>
-  host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
-  port: <%= ENV.fetch("DB_PORT") { "5432" } %>
-  <% end %>
+  adapter: postgresql
+  encoding: unicode
+  database: <%= ENV.fetch("DB_NAME") { "postgres" } %>
+  pool: 5
+  username: postgres
+  password: 1234  # Ensure this is your COMPUTER'S postgres password
+  host: 127.0.0.1                # Use this instead of localhost
+  port: 5432
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -26,7 +35,7 @@ test:
   <% if ENV['DATABASE_URL'] %>
   url: <%= ENV['DATABASE_URL'] %>
   <% else %>
-  database: <%= ENV.fetch("DB_NAME") { "own_project_test" } %>
+  database: <%= ENV.fetch("DB_NAME") { "postgres" } %>
   username: <%= ENV.fetch("DB_USER") { "postgres" } %>
   password: <%= ENV.fetch("DB_PASSWORD") { "" } %>
   host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
