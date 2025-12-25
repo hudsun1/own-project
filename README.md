@@ -3,22 +3,41 @@
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
-Things you may want to cover:
+## Database Setup
 
-* Ruby version
+This project uses PostgreSQL with Railway. See [DATABASE_SETUP.md](DATABASE_SETUP.md) for detailed setup instructions.
 
-* System dependencies
+Quick setup:
+1. Set your `DATABASE_URL` environment variable with your Railway PostgreSQL connection string
+2. Run `rails db:migrate` to set up the database schema
 
-* Configuration
+## Configuration
 
-* Database creation
+* Ruby version: See `.ruby-version` or `Gemfile`
+* Database: PostgreSQL (configured for Railway)
+* See `DATABASE_SETUP.md` for database configuration details
 
-* Database initialization
+## Database Creation and Initialization
 
-* How to run the test suite
+```bash
+rails db:create
+rails db:migrate
+rails db:seed
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+## How to run the test suite
 
-* Deployment instructions
+```bash
+rspec
+```
 
-* ...
+## Services (job queues, cache servers, search engines, etc.)
+
+* Solid Queue for background jobs
+* Solid Cache for caching
+* Solid Cable for Action Cable
+
+## Deployment instructions
+
+* Configure `DATABASE_URL` in your deployment platform
+* The application is configured to use PostgreSQL in production
