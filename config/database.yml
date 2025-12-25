@@ -6,17 +6,6 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
-# development:
-#   <<: *default
-#   <% if ENV['DATABASE_URL'] %>
-#   url: <%= ENV['DATABASE_URL'] %>
-#   <% else %>
-#   database: <%= ENV.fetch("DB_NAME") { "own_project_development" } %>
-#   username: <%= ENV.fetch("DB_USER") { "postgres" } %>
-#   host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
-#   port: <%= ENV.fetch("DB_PORT") { "5432" } %>
-#   <% end %>
-
 development:
   adapter: postgresql
   encoding: unicode
@@ -35,7 +24,7 @@ test:
   <% if ENV['DATABASE_URL'] %>
   url: <%= ENV['DATABASE_URL'] %>
   <% else %>
-  database: <%= ENV.fetch("DB_NAME") { "postgres" } %>
+  database: <%= ENV.fetch("DB_NAME") { "own_project_test" } %>
   username: <%= ENV.fetch("DB_USER") { "postgres" } %>
   password: <%= ENV.fetch("DB_PASSWORD") { "" } %>
   host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
